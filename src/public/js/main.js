@@ -18,4 +18,4 @@ formProduct.addEventListener('submit', (e) => {
 
 
 // socket.emit() => Enviar eventos 
-// Sscket.on() => Escuchar eventos 
+// socket.on() => Escuchar eventos 

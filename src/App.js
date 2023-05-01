@@ -28,7 +28,7 @@ app.use(express.urlencoded({ extended: true })) // Me permite poder realizar con
 app.use('/', express.static(__dirname + '/public'))
 app.use('/api/products', productsRouters)
 app.use('/api/carts', cartsRouters)
-app.use('/api/realTimeproducts', realTimeRouters)
+app.use('/api/realtimeproducts', realTimeRouters)
 
 const myServer = app.listen(PORT, () => {
     console.log(`Server on port ${PORT}`)
@@ -36,7 +36,7 @@ const myServer = app.listen(PORT, () => {
 
 // Server Io
 
-const io = new Server(myServer)
+const io = new Server(myServer) // , { cors: { origin: '*' } }
 
 app.use((req, res, next) => {
     req.io = io
@@ -45,7 +45,7 @@ app.use((req, res, next) => {
 
 io.on('connection', (socket) => {
     console.log('Client connected')
-    socket.on('NewProduct', (product) => {
+    socket.on('newProduct', (product) => {
         console.log(product)
     })
 })
