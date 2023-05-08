@@ -6,9 +6,20 @@ const realTimeRouters = Router()
 const myProductManager = new ProductManager('./products.txt')
 
 realTimeRouters.get('/', async (req, res) => {
-  const product = await myProductManager.getProducts()
-  //req.io.send('Hola')
-  res.render('realTimeProducts', { products: product })
+  req.io.on('connection', (socket) => {
+    console.log('Client connected')
+
+    socket.on('newProduct', async (product) => {
+      const products = await myProductManager.getProducts()
+
+      myProductManager.addProduct(product)
+
+      products
+
+      req.io.emit('products', products)
+    })
+  })
+  res.render('realTimeProducts')
 })
 
 export default realTimeRouters

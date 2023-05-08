@@ -3,6 +3,10 @@ body {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
+h2 {
+    font-family: monospace;
+    color: black;
+}
 
 .card-header {
     background-color: #ddbea9;

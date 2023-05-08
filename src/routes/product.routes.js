@@ -13,19 +13,43 @@ productsRouters.get('/', async (req, res) => {
 
     const product = await myProductManager.getProducts()
 
-    limit ? res.send(productLimit) : res.send(product)
+    limit 
+    ? res.render('home', { products: productLimit }) 
+    : res.render('home', { products: product })
 })
 
 productsRouters.get('/:id', async (req, res) => {
     const product = await myProductManager.getProductById(req.params.id)
-    res.send(product)
+    res.render('products', {
+        title: product.title,
+        price: product.price,
+        stock: product.stock
+    })
 })
 
 // Post
 
-productsRouters.post("/", async(req, res) => {
-    const { title, description, price, thumbnail, code, stock } = req.body
-    await myProductManager.addProduct({ title, description, price, thumbnail, code, stock })
+productsRouters.post("/", async (req, res) => {
+    const { 
+        title, 
+        description, 
+        price, 
+        thumbnail, 
+        status,
+        category,
+        code, 
+        stock, 
+    } = req.body
+    await myProductManager.addProduct({ 
+        title, 
+        description, 
+        price, 
+        thumbnail, 
+        status,
+        category,
+        code, 
+        stock,
+     })
     res.send("Product added")
 })
 
@@ -33,15 +57,35 @@ productsRouters.post("/", async(req, res) => {
 
 productsRouters.put("/:id", async(req, res) => {
     const id = req.params.id
-    const { title, description, price, thumbnail, code, stock } =req.body
 
-    const message = await myProductManager.updateProduct(id, {title, description, price, thumbnail, code, stock})
+    const { 
+        title, 
+        description, 
+        price, 
+        thumbnail, 
+        status,
+        category,
+        code, 
+        stock, 
+    } = req.body
+
+    const message = await myProductManager.updateProduct(id, {
+        title, 
+        description, 
+        price, 
+        thumbnail,
+        status,
+        category, 
+        code, 
+        stock,
+    })
+    const products = await myProductManager.getProducts()
     res.send(message)
 })
 
 // Delete 
 
-productsRouters.delete("/:id", async(req, res) => {
+productsRouters.delete("/:id", async (req, res) => {
     const id = req.params.id
     const message = await myProductManager.deleteProduct(id)
     res.send(message)

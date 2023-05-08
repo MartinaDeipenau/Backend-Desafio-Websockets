@@ -24,12 +24,6 @@ app.set('views', path.resolve(__dirname, './views'))
 app.use(express.json()) // Me permite ejecutar json en la app
 app.use(express.urlencoded({ extended: true })) // Me permite poder realizar consultas en (req.query)
 
-// Routes
-app.use('/', express.static(__dirname + '/public'))
-app.use('/api/products', productsRouters)
-app.use('/api/carts', cartsRouters)
-app.use('/api/realtimeproducts', realTimeRouters)
-
 const myServer = app.listen(PORT, () => {
     console.log(`Server on port ${PORT}`)
 })
@@ -43,9 +37,8 @@ app.use((req, res, next) => {
     return next()
 })
 
-io.on('connection', (socket) => {
-    console.log('Client connected')
-    socket.on('newProduct', (product) => {
-        console.log(product)
-    })
-})
+// Routes
+app.use('/', express.static(__dirname + '/public'))
+app.use('/api/products', productsRouters)
+app.use('/api/carts', cartsRouters)
+app.use('/api/realtimeproducts', realTimeRouters)
